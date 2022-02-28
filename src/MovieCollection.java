@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class MovieCollection
@@ -147,7 +148,37 @@ public class MovieCollection
       listToSort.set(possibleIndex, temp);
     }
   }
-  
+
+  private void sortStringResults(ArrayList<String> listToSort)
+  {
+    for (int j = 1; j < listToSort.size(); j++)
+    {
+      String temp = listToSort.get(j);
+      int possibleIndex = j;
+      while (possibleIndex > 0 && temp.compareTo(listToSort.get(possibleIndex - 1)) < 0)
+      {
+        listToSort.set(possibleIndex, listToSort.get(possibleIndex - 1));
+        possibleIndex--;
+      }
+      listToSort.set(possibleIndex, temp);
+    }
+  }
+
+  public static void insertionSortWordList(ArrayList<String> words)
+  {
+    for (int i = 1; i < words.size(); i++)
+    {
+      int index = i;
+      String temp = words.get(i);
+      while (index > 0 && words.get(index).compareTo(words.get(index-1)) < 0)
+      {
+        words.set(index, words.get(index-1));
+        words.set(index-1, temp);
+        index--;
+      }
+    }
+  }
+
   private void displayMovieInfo(Movie movie)
   {
     System.out.println();
@@ -206,7 +237,35 @@ public class MovieCollection
 
   private void searchCast()
   {
-    /* TASK 4: IMPLEMENT ME! */
+    System.out.print("Enter a person to search for (first or last name): ");
+    String searchTerm = scanner.nextLine();
+    searchTerm = searchTerm.toLowerCase();
+
+    ArrayList<String> results = new ArrayList<>();
+
+    for (int i = 0; i < movies.size(); i++)
+    {
+      String movieCast = movies.get(i).getCast();
+      movieCast = movieCast.toLowerCase();
+      String[] cast = movieCast.split("\\|");
+      for (int j = 0; j < cast.length; j++)
+      {
+        if (results.indexOf(cast[j]) == -1 && movieCast.indexOf(searchTerm) != -1)
+        {
+          results.add(cast[j]);
+        }
+      }
+    }
+
+    //sortStringResults(results);
+    insertionSortWordList(results);
+
+    for (int i = 0; i < results.size(); i++)
+    {
+      String title = results.get(i);
+      int choiceNum = i + 1;
+      System.out.println("" + choiceNum + ". " + title);
+    }
   }
   
   private void listGenres()
