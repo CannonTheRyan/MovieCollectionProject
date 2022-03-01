@@ -246,19 +246,18 @@ public class MovieCollection
     for (int i = 0; i < movies.size(); i++)
     {
       String movieCast = movies.get(i).getCast();
-      movieCast = movieCast.toLowerCase();
       String[] cast = movieCast.split("\\|");
       for (int j = 0; j < cast.length; j++)
       {
-        if (results.indexOf(cast[j]) == -1 && movieCast.indexOf(searchTerm) != -1)
+        if (results.indexOf(cast[j]) == -1 && cast[j].toLowerCase().indexOf(searchTerm.toLowerCase()) != -1)
         {
           results.add(cast[j]);
         }
       }
     }
 
-    //sortStringResults(results);
-    insertionSortWordList(results);
+    sortStringResults(results);
+    //insertionSortWordList(results);
 
     for (int i = 0; i < results.size(); i++)
     {
